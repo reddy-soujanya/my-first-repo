@@ -1,0 +1,4 @@
+i created a new folder called work1 
+i cd to work1
+created a file called textwork1.txt and added 3 lines
+

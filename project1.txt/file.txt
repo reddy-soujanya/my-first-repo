@@ -1,2 +1,0 @@
-i created a new folder callled project1.txt to leaarn how to create folder and push to github
-

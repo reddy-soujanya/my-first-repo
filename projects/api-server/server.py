@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+from datetime import datetime
+import uuid  # Import at the top
 
 app = Flask(__name__)
 
@@ -38,11 +40,14 @@ def get_user(user_id):
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.json
-    user_id = str(len(users) + 1)
     if 'name' in data and 'email' in data:
+        user_id = str(uuid.uuid4())  # Generate a unique ID
+        timestamp = datetime.utcnow().isoformat()
         users[user_id] = {
             "name": data['name'],
-            "email": data['email']
+            "email": data['email'],
+            "created_at": timestamp,
+            "updated_at": timestamp
         }
         save_to_file()
         return jsonify({"id": user_id}), 201
@@ -53,6 +58,7 @@ def update_user(user_id):
     if user_id in users:
         data = request.json
         users[user_id].update(data)
+        users[user_id]['updated_at'] = datetime.utcnow().isoformat()  # Update the timestamp
         save_to_file()
         return jsonify(users[user_id]), 200
     return jsonify({"error": "User not found"}), 404
